@@ -6,13 +6,24 @@
             :src="img"
             class="align-bottom w-8 h-8 sb-img-mx"
             style="object-fit: cover;"
-            v-for="(img, index) in field.thumbnailUrl"
+            v-for="img in images"
         />
+
+        <span v-if="number > 0">+{{ number }}</span>
     </div>
 </template>
 
 <script>
-    export default {
-        props: ['resourceName', 'field'],
+export default {
+    props: ['resourceName', 'field'],
+
+    computed: {
+        images() {
+            return this.field.thumbnailUrl.slice(0, 3)
+        },
+        number() {
+            return this.field.thumbnailUrl.length - this.images.length
+        }
     }
+}
 </script>
