@@ -1,9 +1,9 @@
 <template>
     <panel-item :field="field">
         <div class="sb-field-images" slot="value">
-            <div :key="index" v-for="(img, index) in field.previewUrl">
+            <div :key="index" v-for="img in this.field.previewUrl">
                 <img
-                    :alt="index"
+                    alt=""
                     :class="{ 'rounded-full': field.rounded, rounded: !field.rounded }"
                     :src="img"
                 />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    export default {
-        props: ['resource', 'resourceName', 'resourceId', 'field'],
-    }
+export default {
+    props: ['resource', 'resourceName', 'resourceId', 'field'],
+}
 </script>

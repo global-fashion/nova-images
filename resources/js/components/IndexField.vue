@@ -9,7 +9,7 @@
             v-for="img in images"
         />
 
-        <span v-if="number > 0">+{{ number }}</span>
+        <small class="sb-images-num" v-if="number > 0">+{{ number }}</small>
     </div>
 </template>
 

@@ -60,65 +60,66 @@
 </template>
 
 <script>
-    import { FormField, HandlesValidationErrors } from 'laravel-nova'
+import {FormField, HandlesValidationErrors} from 'laravel-nova'
 
-    export default {
-        mixins: [FormField, HandlesValidationErrors],
+export default {
+    mixins: [FormField, HandlesValidationErrors],
 
-        props: ['resourceName', 'resourceId', 'field'],
+    props: ['resourceName', 'resourceId', 'field'],
 
-        data () {
-            return {
-                removeModalOpen: false,
-                previewUrl: [],
-                paths: [],
-                deletes: [],
-                order: null,
-                value: [],
-            }
+    data() {
+        return {
+            removeModalOpen: false,
+            previewUrl: [],
+            paths: [],
+            deletes: [],
+            order: null,
+            value: [],
+        }
+    },
+
+    computed: {
+        currentLabel() {
+            return this.showOrderType ? this.__('selected :count file', {count: this.value.length}) : this.__('no file selected')
         },
 
-        computed: {
-            currentLabel () {
-                return this.showOrderType ? this.__('selected :count file', { count: this.value.length }) : this.__('no file selected')
-            },
-            showOrderType () {
-                return this.value.length > 0
-            }
+        showOrderType() {
+            return this.value.length > 0
+        }
+    },
+
+    methods: {
+        setInitialValue() {
+            this.value = []
+            this.paths = this.field.value || []
+            this.order = this.field.order || 'before'
+            this.previewUrl = this.field.previewUrl || []
         },
 
-        methods: {
-            setInitialValue () {
-                this.value = []
-                this.paths = this.field.value || []
-                this.order = this.field.order || 'before'
-                this.previewUrl = this.field.previewUrl || []
-            },
+        fill(formData) {
+            formData.append('order', this.order)
 
-            fill (formData) {
-                formData.append('order', this.order)
+            Array.from(this.value).forEach(file => {
+                formData.append(this.field.attribute + '[]', file)
+            })
 
-                Array.from(this.value).forEach(file => {
-                    formData.append(this.field.attribute + '[]', file)
-                })
-
-                this.deletes.forEach(file => {
-                    formData.append('deletes[]', file)
-                })
-            },
-
-            removeFile (index) {
-                this.previewUrl.splice(index, 1)
-                this.deletes.push(this.paths.splice(index, 1))
-
-                this.$emit('file-deleted')
-            },
-
-            fileChange (event) {
-                this.value = Array.from(event.target.files)
-
-                this.$emit('file-change')
-            }
+            this.deletes.forEach(file => {
+                formData.append('deletes[]', file)
+            })
         },
+
+        removeFile(index) {
+            this.previewUrl.splice(index, 1)
+            this.deletes.push(this.paths.splice(index, 1))
+
+            this.$emit('file-deleted')
+        },
+
+        fileChange(event) {
+            this.value = Array.from(event.target.files)
+
+            this.$emit('file-change')
+        }
     }
+}
 </script>
