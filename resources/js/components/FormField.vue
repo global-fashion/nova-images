@@ -80,7 +80,7 @@ export default {
 
     computed: {
         currentLabel() {
-            return this.showOrderType ? this.__('selected :count file', {count: this.value.length}) : this.__('no file selected')
+            return this.showOrderType ? this.__('selected :count file', {count: `${this.value.length}`}) : this.__('no file selected')
         },
 
         showOrderType() {
